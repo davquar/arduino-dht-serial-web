@@ -1,0 +1,143 @@
+<!--
+    This page queries the API and retrieves a JSON string containing
+    the current temperature and humidity, then displays the data in
+    a pretty dashboard-style view, with auto-refreshing every 5 seconds.
+
+    It is written in plain HTML5, CSS and vanilla JavaScript.
+
+    Author: Davide Quaranta
+    quaranta.1715742@studenti.uniroma1.it
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Temperature Monitor Dashboard</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+    <h1>Temperature Monitor Dashboard</h1>
+    <div class="dashboard">
+        <div class="temperature">
+            <h2>Temperature</h2>
+            <div class="value">##</div>
+            <div class="description"></div>
+        </div>
+        <div class="humidity">
+            <h2>Humidity</h2>
+            <div class="value">##</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <p class="last-update"></p>
+</body>
+
+<script>
+    // do the innitial reading, and set a timer for refreshing every 5 seconds
+    readData(); 
+    setInterval(() => {
+       readData(); 
+    }, 5000);
+
+    // "map" variables to the corresponding HTML DOM elements
+    const temperature = document.querySelector(".temperature .value");
+    const humidity = document.querySelector(".humidity .value");
+    const temperatureDescription = document.querySelector(".temperature .description");
+    const humidityDescription = document.querySelector(".humidity .description");
+    const lastUpdate = document.querySelector(".last-update");
+
+    /**
+     * Gets a textual description of the given temperature
+     * */
+    function getTemperatureDescription(temperature) {
+        if (temperature < 0) return "freezing";
+        if (temperature < 20) return "cold";
+        if (temperature < 26) return "warm";
+        return "hot";
+    }
+
+    /**
+     * Gets a textual description of the given relative humidity
+     * */
+    function getHumidityDescription(humidity) {
+        if (humidity < 40) return "dry";
+        if (humidity < 60) return "comfort";
+        return "wet";
+    }
+
+    /**
+     * Retrieves the JSON data from the API
+     * */
+    function readData() {
+        fetch('http://localhost:8000/api')
+            .then(response => response.json())
+            .then(data => {
+                // "data" is the JavaScript object represented by the JSON response
+                const now = new Date();
+                temperature.innerHTML = Math.round(data.temperature);
+                humidity.innerHTML = data.humidity;
+                temperatureDescription.innerHTML = getTemperatureDescription(data.temperature);
+                humidityDescription.innerHTML = getHumidityDescription(data.humidity);
+                lastUpdate.innerHTML = `Last update: ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+                console.log("updating", data.temperature, data.humidity);
+            }
+        );
+    }
+</script>
+
+<style>
+    body {
+        font-family: monospace;
+    }
+
+    h1, h2, .last-update {
+        text-align: center;
+    }
+
+    .dashboard {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .temperature,
+    .humidity {
+        height: 200px;
+        width: 200px;
+        border: 1px solid black;
+        border-radius: 10px;
+    }
+
+    .temperature {
+        margin-right: 20px;
+    }
+
+    .value {
+        font-size: 72px;
+        font-weight: bold;
+    }
+
+    .temperature .value::after {
+        content: "°C";
+    }
+
+    .humidity .value::after {
+        content: "%";
+    }
+
+    .value::after {
+        font-size: 42px;
+        vertical-align: 17px;
+    }
+
+    .description {
+        font-size: 25px;
+    }
+</style>
+
+</html>
