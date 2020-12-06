@@ -37,7 +37,9 @@ void setup() {
 
   // begin using the DHT 
   dht.begin();
-  lcd.print("Temp:  Humidity:");
+  lcd.print("Temperat");
+  lcd.setCursor(0, 1);                    // prepare to print on the second row
+  lcd.print("Humidity");
 
   // begin using the serial port with baudrate 9600
   Serial.begin(9600);
@@ -48,15 +50,18 @@ void setup() {
 
 void loop() {
   delay(2000);                            // add a delay needed to avoid DHT reading errors
-  lcd.setCursor(0, 1);                    // set the cursor on row 1 and column 0
 
   // read data from the sensor
   int hum = dht.readHumidity();
   float temp = dht.readTemperature();
 
+  lcd.setCursor(9, 0);                    // set the cursor on row 0 and column 9
   lcd.print(temp);
-  lcd.setCursor(7,1);                     // set the cursor on row 1 and column 7
+  lcd.print((char)223);                   // print degree (°) character
+  lcd.print("C");
+  lcd.setCursor(9, 1);                    // set the cursor on row 1 and column 9
   lcd.print(hum);
+  lcd.print("%");
 
   char json[50];                          // prepare a buffer for the JSON stirng
   
