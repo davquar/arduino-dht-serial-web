@@ -1,10 +1,14 @@
 /**
- * This Arduino code reads temperature and relative humidity
- * from a DHT11 sensor, and prints the data to an LCD display
- * and the serial port, to make the data avilable to other applications.
- * //TODO: dressing + status leds
+ * dht-serial-web.ino
+ * 
+ * This Arduino code reads temperature and relative humidity from a
+ * DHT11 sensor, and prints the data to an LCD display and to the
+ * serial port, to make the data avilable to other applications.
+ * 
  * Author: Davide Quaranta
  * quaranta.1715742@studenti.uniroma1.it
+ * 
+ * Created on 2020-12-04
  */
 
 // import required libraries

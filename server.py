@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+#
+# server.py
+#
 # This script connects to the serial port (the Arduino) to retrieve data
 # from the sensors, which is in form of a JSON string
 # { temperature: <val>, humidity: <val> }.
@@ -12,6 +14,9 @@
 #
 # Author: Davide Quaranta
 # quaranta.1715742@studenti.uniroma1.it
+#
+# Created on 2020-12-04
+# - - - - - - - - - - - 
 
 # import needed libraries
 import serial
