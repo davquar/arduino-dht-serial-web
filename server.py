@@ -38,7 +38,6 @@ class MyHandler(BaseHTTPRequestHandler):
         if self.path == "/api":
             # this is an API call: read from serial port
             data = ser.readline()
-            print(data)
             self.send_response(200)                                 # 200: OK
             self.send_header("Content-type", "application/json")    # this content is JSON
             self.end_headers()
